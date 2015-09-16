@@ -1,14 +1,16 @@
 require 'active_record'
+require 'logger'
 
 ActiveRecord::Base.establish_connection(
   "adapter" => "sqlite3",
   "database" => "./blog.db"
 )
 
+ActiveRecord::Base.logger=Logger.new(STDOUT)
+
 
 class Post < ActiveRecord::Base
-	scope :top3, order("created_at").limit(3)
-
+  scope :top3, -> { order("created_at").limit(3) }
 end
 
 
