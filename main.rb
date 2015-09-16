@@ -5,10 +5,15 @@ ActiveRecord::Base.establish_connection(
   "database" => "./blog.db"
 )
 
+
 class Post < ActiveRecord::Base
+	scope :top3, order("created_at").limit(3)
+
 end
 
-# p Post.where(:title => "title1",:id => 1)
-# p Post.where("title = :title and id = :id" ,{:title=>"title1",:id=>1})#配列で指定もできる
-# p Post.where("id>?",2)
-p Post.where("body like ?","hello%")
+
+
+# p Post.where(:id=> 1...3)
+# p Post.where(:id=> [1,3])
+# p Post.order("id desc").limit(3)
+p Post.top3
