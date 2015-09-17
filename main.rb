@@ -1,4 +1,5 @@
-#データの削除
+#バリデーション
+#フィールドに対してルールを設ける
 require 'active_record'
 
 ActiveRecord::Base.establish_connection(
@@ -8,10 +9,15 @@ ActiveRecord::Base.establish_connection(
 
 
 class Post < ActiveRecord::Base
+	validates :title,:presence=>true#titleは無くてはいけない
+	validates :body, :length=>{:minimum=>5}#5文字以下ならばセーブされない
 end
-#delete:record only fast
-#destroy:object slow
 
-# Post.where(:id=>1..2).delete_all
-Post.find(3).destroy#idが3のものをオブジェクトごと削除
+post=Post.new(:body =>"123")
+post.save
+
+if !post.save
+	p post.errors.messages
+end
+
 p Post.all
