@@ -1,5 +1,4 @@
-#バリデーション
-#フィールドに対してルールを設ける
+#アソシエーション
 require 'active_record'
 
 ActiveRecord::Base.establish_connection(
@@ -9,15 +8,14 @@ ActiveRecord::Base.establish_connection(
 
 
 class Post < ActiveRecord::Base
-	validates :title,:presence=>true#titleは無くてはいけない
-	validates :body, :length=>{:minimum=>5}#5文字以下ならばセーブされない
+	has_many :comments#複数のコメントを持つ
 end
 
-post=Post.new(:body =>"123")
-post.save
-
-if !post.save
-	p post.errors.messages
+class Comment < ActiveRecord::Base
+	belongs_to :post
 end
 
-p Post.all
+post = Post.find(1)#id１を参照
+post.comments.each do |comment|
+	p comment.body
+end
