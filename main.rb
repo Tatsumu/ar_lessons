@@ -8,14 +8,17 @@ ActiveRecord::Base.establish_connection(
 
 
 class Post < ActiveRecord::Base
-	has_many :comments#複数のコメントを持つ
+	has_many :comments, :dependent => :destroy#関連するレコードを削除する
 end
 
 class Comment < ActiveRecord::Base
 	belongs_to :post
 end
 
-post = Post.find(1)#id１を参照
-post.comments.each do |comment|
-	p comment.body
-end
+p Post.all
+p Comment.all
+
+Post.find(1).destroy
+
+p Post.all
+p Comment.all
